@@ -1,0 +1,472 @@
+# Allow colour from hex instead of rgb
+#:import utils kivy.utils
+# Screen
+<MainWindow>:
+    # Set an image as the background
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: 'Background.png'
+    # Run the update() method of the MainWindow class when the screen is entered
+    on_enter: root.update()
+    # Allow a vertical layout of the screen
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: 10
+        padding: 40
+        FloatLayout:
+            Label
+                pos_hint:{"x":0.08,"y":0.6}
+                size_hint: 0.85, 0.4
+                background_normal: ''
+                canvas.before:
+                    Color:
+                        rgba: .7,.7,.7,1
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+            Label:
+                pos_hint:{"x":-0.35,"y":0.1}
+                size_hint: 1, 0.3
+                font_size: 24
+                text: "Name:"
+                color: utils.get_color_from_hex('767676')
+            Label:
+                pos_hint:{"x":0,"y":0.1}
+                size_hint: 1, 0.3
+                font_size: 24
+                text: "Category:"
+                color: utils.get_color_from_hex('878787')
+            Label:
+                pos_hint:{"x":0.3,"y":0.1}
+                size_hint: 1, 0.3
+                font_size: 24
+                text: "Expiration Date:"
+                color: utils.get_color_from_hex('989898')
+            Button:
+                pos_hint:{"x":0.07,"y":0.65}
+                size_hint: 0.17, 0.4
+                font_size: 24
+                background_normal: ''
+                background_color: utils.get_color_from_hex('e3fdff')
+                text: "New"
+                color: utils.get_color_from_hex('a1a9a8')
+                on_release:
+                    root.manager.transition.direction = "up"
+                    root.newBtn()
+            Button:
+                pos_hint:{"x":0.24,"y":0.65}
+                size_hint: 0.17, 0.4
+                font_size: 24
+                background_normal: ''
+                background_color: utils.get_color_from_hex('d1f7ff')
+                text: "Sort List"
+                color: utils.get_color_from_hex('a1a9a8')
+                on_release:
+                    root.manager.transition.direction = "up"
+                    root.sortBtn()
+            Button:
+                pos_hint:{"x":0.41,"y":0.65}
+                size_hint: 0.19, 0.4
+                font_size: 24
+                background_normal: ''
+                background_color: utils.get_color_from_hex('b4d9ee')
+                text: "Reminders"
+                color: utils.get_color_from_hex('949494')
+                on_release:
+                    root.manager.transition.direction = "up"
+                    root.reminderBtn()
+            Button:
+                pos_hint:{"x":0.6,"y":0.65}
+                size_hint: 0.15, 0.4
+                font_size: 24
+                background_normal: ''
+                background_color: utils.get_color_from_hex('9ecde9')
+                text: "Edit"
+                color: utils.get_color_from_hex('949494')
+                on_release:
+                    root.manager.transition.direction = "up"
+                    root.editBtn()
+            Button:
+                pos_hint:{"x":0.75,"y":0.65}
+                size_hint: 0.17, 0.4
+                font_size: 24
+                background_normal: ''
+                background_color: utils.get_color_from_hex('6699cc')
+                text: "Search"
+                color: utils.get_color_from_hex('cfcfcf')
+                on_release:
+                    root.manager.transition.direction = "up"
+                    root.searchBtn()
+        ScrollView:
+            canvas.before:
+                Color:
+                    rgba: 0.64, 0.79, 0.89, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            size_hint: 1,3
+            GridLayout:
+                size_hint: 1,None
+                height: self.minimum_height
+                cols: 3
+                GridLayout:
+                    size_hint: 1,None
+                    cols: 1
+                    ItemLabel:
+                        id: item_column
+                        text: ""
+                GridLayout:
+                    size_hint: 1,None
+                    cols: 1
+                    ItemLabel:
+                        id: category_column
+                        text: ""
+                        color: 1, 1, 1, 1
+                GridLayout:
+                    size_hint: 1,None
+                    cols: 1
+                    ItemLabel:
+                        id: expiry_column
+                        text: ""
+<NewItem>:
+    name: "New Item"
+    item_name: item_name
+    category: category
+    expiration_date: expiration_date
+    canvas.before:
+        Color:
+            rgba: 0.89,0.99,1,1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    FloatLayout:
+        cols:1
+        FloatLayout:
+            size: root.width, root.height/2
+            Label:
+                text: "Add a new item"
+                color: utils.get_color_from_hex('a1a9a8')
+                size_hint: 0.8, 0.2
+                pos_hint: {"x":0.1, "top":1}
+                font_size: (root.width**2 + root.height**2) / 14**4
+
+            Label:
+                size_hint: 0.5,0.12
+                pos_hint: {"x":0, "top":0.8}
+                text: "Name of new item: "
+                color: utils.get_color_from_hex('a1a9a8')
+                font_size: (root.width**2 + root.height**2) / 14**4
+
+            TextInput:
+                pos_hint: {"x":0.5, "top":0.8}
+                size_hint: 0.4, 0.12
+                id: item_name
+                multiline: False
+                font_size: (root.width**2 + root.height**2) / 14**4
+
+            Label:
+                size_hint: 0.5,0.12
+                pos_hint: {"x":0, "top":0.8-0.13}
+                text: "Category: "
+                color: utils.get_color_from_hex('a1a9a8')
+                font_size: (root.width**2 + root.height**2) / 14**4
+
+            TextInput:
+                pos_hint: {"x":0.5, "top":0.8-0.13}
+                size_hint: 0.4, 0.12
+                id: category
+                multiline: False
+                font_size: (root.width**2 + root.height**2) / 14**4
+
+            Label:
+                size_hint: 0.5,0.12
+                pos_hint: {"x":0, "top":0.8-0.13*2}
+                text: "Expiration Date: \n(YYYY/MM/DD)"
+                color: utils.get_color_from_hex('a1a9a8')
+                font_size: (root.width**2 + root.height**2) / 14**4
+
+            TextInput:
+                pos_hint: {"x":0.5, "top":0.8-0.13*2}
+                size_hint: 0.4, 0.12
+                id: expiration_date
+                multiline: False
+                font_size: (root.width**2 + root.height**2) / 14**4
+
+            Button:
+                pos_hint:{"x":0.2,"y":0.15}
+                size_hint: 0.6, 0.15
+                background_normal: ''
+                background_color: utils.get_color_from_hex('23395d')
+                text: "Save"
+                font_size: (root.width**2 + root.height**2) / 14**4
+                on_release:
+                    root.manager.transition.direction = "down"
+                    root.submit()
+
+<SortList>:
+    name: "Sort List"
+    canvas.before:
+        Color:
+            rgba: 0.82,0.97,1,1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    FloatLayout:
+        cols:1
+        FloatLayout:
+            size: root.width, root.height/2
+            Label:
+                pos_hint:{"x":0.015,"y":0.8}
+                size_hint: 1, 0.15
+                text: "How would you like to sort the list?"
+                color: utils.get_color_from_hex('a1a9a8')
+                font_size: (root.width**2 + root.height**2) / 14**4
+
+            Button:
+                pos_hint:{"x":0.2,"y":0.6}
+                size_hint: 0.6, 0.15
+                background_normal: ''
+                background_color: utils.get_color_from_hex('23395d')
+                text: "By Name"
+                font_size: (root.width**2 + root.height**2) / 14**4
+                on_release:
+                    root.nameSort()
+                    root.manager.transition.direction = "down"
+                    root.submit()
+
+            Button:
+                pos_hint:{"x":0.2,"y":0.4}
+                size_hint: 0.6, 0.15
+                background_normal: ''
+                background_color: utils.get_color_from_hex('203354')
+                text: "By Category"
+                font_size: (root.width**2 + root.height**2) / 14**4
+                on_release:
+                    root.categorySort()
+                    root.manager.transition.direction = "down"
+                    root.submit()
+
+            Button:
+                pos_hint:{"x":0.2,"y":0.2}
+                size_hint: 0.6, 0.15
+                background_normal: ''
+                background_color: utils.get_color_from_hex('1c2e4a')
+                text: "By Expiration Date"
+                font_size: (root.width**2 + root.height**2) / 14**4
+                on_release:
+                    root.expirySort()
+                    root.manager.transition.direction = "down"
+                    root.submit()
+<Reminders>:
+    name: "Reminders"
+    canvas.before:
+        Color:
+            rgba: 0.71,0.85,0.93,1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    FloatLayout:
+        cols:1
+
+        FloatLayout:
+            size: root.width, root.height/2
+            Label:
+                size_hint: 0.5,0.12
+                pos_hint: {"x":0.25, "top":0.8}
+                text: "A reminder how many days before the expiration date?"
+                font_size: (root.width**2 + root.height**2) / 14**4
+
+            TextInput:
+                pos_hint: {"x":0.3, "top":0.6}
+                size_hint: 0.4, 0.12
+                id: set_reminder
+                multiline: False
+                font_size: (root.width**2 + root.height**2) / 14**4
+
+            Button:
+                pos_hint:{"x":0.2,"y":0.15}
+                size_hint: 0.6, 0.15
+                background_normal: ''
+                background_color: utils.get_color_from_hex('23395d')
+                text: "Save"
+                font_size: (root.width**2 + root.height**2) / 14**4
+                on_release:
+                    root.manager.transition.direction = "down"
+                    root.submit()
+
+<ItemLabel@Label>:
+    size_hint:1,None
+<EditList>:
+    name: "New Item"
+    item_name: item_name
+    category: category
+    expiration_date: expiration_date
+    canvas.before:
+        Color:
+            rgba: 0.62,0.80,0.91,1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    FloatLayout:
+        cols:1
+
+        FloatLayout:
+            size: root.width, root.height/2
+
+            Label:
+                text: "Delete an item"
+                size_hint: 0.8, 0.2
+                pos_hint: {"x":0.1, "top":1}
+                font_size: (root.width**2 + root.height**2) / 14**4
+
+            Label:
+                size_hint: 0.5,0.12
+                pos_hint: {"x":0, "top":0.8}
+                text: "Name of new item: "
+                font_size: (root.width**2 + root.height**2) / 14**4
+
+            TextInput:
+                pos_hint: {"x":0.5, "top":0.8}
+                size_hint: 0.4, 0.12
+                id: item_name
+                multiline: False
+                font_size: (root.width**2 + root.height**2) / 14**4
+
+            Label:
+                size_hint: 0.5,0.12
+                pos_hint: {"x":0, "top":0.8-0.13}
+                text: "Category: "
+                font_size: (root.width**2 + root.height**2) / 14**4
+
+            TextInput:
+                pos_hint: {"x":0.5, "top":0.8-0.13}
+                size_hint: 0.4, 0.12
+                id: category
+                multiline: False
+                font_size: (root.width**2 + root.height**2) / 14**4
+
+            Label:
+                size_hint: 0.5,0.12
+                pos_hint: {"x":0, "top":0.8-0.13*2}
+                text: "Expiration Date: \n(YYYY/MM/DD)"
+                font_size: (root.width**2 + root.height**2) / 14**4
+
+            TextInput:
+                pos_hint: {"x":0.5, "top":0.8-0.13*2}
+                size_hint: 0.4, 0.12
+                id: expiration_date
+                multiline: False
+                font_size: (root.width**2 + root.height**2) / 14**4
+
+            Button:
+                pos_hint:{"x":0.2,"y":0.15}
+                size_hint: 0.6, 0.15
+                background_normal: ''
+                background_color: utils.get_color_from_hex('23395d')
+                text: "Save"
+                font_size: (root.width**2 + root.height**2) / 14**4
+                on_release:
+                    root.manager.transition.direction = "down"
+                    root.remove()
+
+<SearchList>:
+    name: "Search List"
+    canvas.before:
+        Color:
+            rgba: 0.4,0.6,0.8,1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: 10
+        padding: 30
+        FloatLayout:
+            padding: 60
+            Label:
+                pos_hint:{"x":-0.325,"y":0}
+                size_hint: 1, 0.3
+                font_size: 24
+                text: "Name:"
+            Label:
+                pos_hint:{"x":0,"y":0}
+                size_hint: 1, 0.3
+                font_size: 24
+                text: "Category:"
+            Label:
+                pos_hint:{"x":0.325,"y":0}
+                size_hint: 1, 0.3
+                font_size: 24
+                text: "Expiration Date:"
+            Label:
+                size_hint: 0.5,0.07
+                pos_hint: {"x":0.25, "top":0.9}
+                text: "Enter the name of the item you would like to find: "
+                font_size: (root.width**2 + root.height**2) / 14**4
+
+            TextInput:
+                pos_hint: {"x":0.2, "top":0.65}
+                size_hint: 0.5, 0.25
+                id: item_search
+                multiline: False
+                font_size: (root.width**2 + root.height**2) / 14**4
+
+            Button:
+                pos_hint:{"x":0.6,"top":0.65}
+                size_hint: 0.2, 0.255
+                background_normal: ''
+                background_color: utils.get_color_from_hex('23395d')
+                text: "Search"
+                font_size: (root.width**2 + root.height**2) / 14**4
+                on_release:
+                    root.manager.transition.direction = "down"
+                    root.search()
+        ScrollView:
+            canvas.before:
+                Color:
+                    rgba: 0.64, 0.79, 0.89, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            pos_hint:{"x":0,"y":1.2}
+            size_hint: 1,1.6
+            GridLayout:
+                size_hint: 1,None
+                height: self.minimum_height
+                cols: 3
+                GridLayout:
+                    size_hint: 1,None
+                    height: self.minimum_height
+                    cols: 1
+                    rows: 100
+                    ItemLabel:
+                        id: found_name
+                        text: ""
+                GridLayout:
+                    size_hint: 1,None
+                    height: self.minimum_height
+                    cols: 1
+                    rows: 100
+                    ItemLabel:
+                        id: found_category
+                        text: ""
+                GridLayout:
+                    size_hint: 1,None
+                    height: self.minimum_height
+                    cols: 1
+                    rows: 100
+                    ItemLabel:
+                        id: found_expiry
+                        text: ""
+        Button:
+            pos_hint:{"x":0.4,"y":1.5}
+            size_hint: 0.2, 0.25
+            background_normal: ''
+            background_color: utils.get_color_from_hex('23395d')
+            text: "Save"
+            font_size: (root.width**2 + root.height**2) / 14**4
+            on_release:
+                root.manager.transition.direction = "down"
+                root.submit()
